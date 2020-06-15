@@ -1,7 +1,6 @@
 # re-vue
-
-Vue是漸進式框架，
-
+    Vue是漸進式框架，主要處理使用者介面，平易近人，核心的Libary是在畫面
+    可以跟其他libary和平共處
 
 1.Don’t use the minified version during development. You will miss out on all the nice warnings for common mistakes!
 2.開發時不要用minified，壓縮的版本不會顯示debug訊息，會錯過應該顯示的錯誤訊息
