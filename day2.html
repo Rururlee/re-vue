@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day2-基本介紹</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="section1">
+        <span>data1</span>
+        <span>data2</span>
+        <span>data3</span>
+        <span>data4</span>
+        <span>data5</span>
+        <span>data6</span>
+        <span>data7</span>
+        <span>data8</span>
+        <span>data9</span>
+        <span>data10</span>
+      </div>
+      <div id="section2">
+        <span>data1</span>
+        <span>data2</span>
+        <span>data3</span>
+        <span>data4</span>
+        <span>data5</span>
+        <span>data6</span>
+        <span>data7</span>
+        <span>data8</span>
+        <span>data9</span>
+        <span>data10</span>
+      </div>
+      <div id="section3">
+        <span>data1</span>
+        <span>data2</span>
+        <span>data3</span>
+        <span>data4</span>
+        <span>data5</span>
+        <span>data6</span>
+        <span>data7</span>
+        <span>data8</span>
+        <span>data9</span>
+        <span>data10</span>
+      </div>
+      <div id="section4">
+        <span>data1</span>
+        <span>data2</span>
+        <span>data3</span>
+        <span>data4</span>
+        <span>data5</span>
+        <span>data6</span>
+        <span>data7</span>
+        <span>data8</span>
+        <span>data9</span>
+        <span>data10</span>
+      </div>
+      <div id="section5">
+        {{ copyright }}
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 上線不一定要換min -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script>
+      $(function () {
+        // section1~4 - jQuery
+        // 導入vue，如果可以的話放同個立即函式(首選)
+      })
+    </script>
+    <script>
+      // 不行的話另外開新的函式(次選)，總之要依照當場狀況思考
+      // 不用$是因為不是寫jQuery
+      ;(function () {
+        // section5 - vue
+        new Vue({
+          el: '#section5',
+          data: {
+            copyright: '© RURUR STUDIO '+ new Date().getFullYear(),
+          },
+        })
+      })()
+    </script>
+  </body>
+</html>
