@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>想為使用jQuery的專案導入vue</title>
+    <title>day1-基本介紹</title>
   </head>
   <body>
     <div id="app">
@@ -55,7 +55,9 @@
         <span>data9</span>
         <span>data10</span>
       </div>
-      <div id="section5"></div>
+      <div id="section5">
+        {{ copyright }}
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- 上線不一定要換min -->
@@ -71,6 +73,12 @@
       // 不用$是因為不是寫jQuery
       ;(function () {
         // section5 - vue
+        new Vue({
+          el: '#section5',
+          data: {
+            copyright: '© RURUR STUDIO '+ new Date().getFullYear(),
+          },
+        })
       })()
     </script>
   </body>
