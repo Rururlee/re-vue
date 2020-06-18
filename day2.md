@@ -18,7 +18,8 @@
     2.data === vm.$data，從console去操作，可發現vm.$data是跟data一樣東西
 
 # lifecycle
-  *盡量用vue去綁定事件
+*盡量用 vue 去綁定事件
+*這些 hook 都可做在 option 裡面
     [beforeCreate]
     *beforeCreate
     [create]
@@ -28,5 +29,4 @@
     *lightbox 會應用到，先把 lightbox new 好，等使用者用到時再 mount 出來
     [mount]
     *上到畫面了，但此時還抓不到網頁的元素(getElementById 等)
-    [beforeDestroy]
-    *模組要被消滅之前做的事 \*自己做 addEventListener 要在這裡就關掉，否則會殘留
+    [beforeDestroy] \*模組要被消滅之前做的事 \*自己做 addEventListener 要在這裡就關掉，否則會殘留
