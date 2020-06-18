@@ -24,21 +24,21 @@
 
 ### beforeCreate
 
- | beforeCreate
+    | beforeCreate
 
 ### create
 
- | 確定有 el 或 template
+    | 確定有 el 或 template
 
 ### beforeMount
 
- | html 都準備好了，準備要放到對應的 el
- | lightbox 會應用到，先把 lightbox new 好，等使用者用到時再 mount 出來
+    | html 都準備好了，準備要放到對應的 el
+    | lightbox 會應用到，先把 lightbox new 好，等使用者用到時再 mount 出來
 
 ### mount]
 
- | 上到畫面了，但此時還抓不到網頁的元素(getElementById 等)
+    | 上到畫面了，但此時還抓不到網頁的元素(getElementById 等)
 
 ### beforeDestroy
 
- | 模組要被消滅之前做的事 \*自己做 addEventListener 要在這裡就關掉，否則會殘留
+    | 模組要被消滅之前做的事 \*自己做 addEventListener 要在這裡就關掉，否則會殘留
