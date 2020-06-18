@@ -35,7 +35,7 @@
     | html 都準備好了，準備要放到對應的 el
     | lightbox 會應用到，先把 lightbox new 好，等使用者用到時再 mount 出來
 
-### mount]
+### mount
 
     | 上到畫面了，但此時還抓不到網頁的元素(getElementById 等)
 
