@@ -7,7 +7,8 @@
   </head>
   <body>
     <div id="app">
-      {{ msg }}
+      <p v-once>{{ msg }}</p>
+      <p>{{ msg }}</p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
@@ -20,7 +21,6 @@
       //Object.freeze(data)
       //data freeze住了，在console就不會寫是observer，在console也不能改資料、響應資料
       //專案時不要亂用
-
 
       //思考一個商品圖片區塊做資料連動，它應會被賦予甚麼資料
       // let pokemon = {

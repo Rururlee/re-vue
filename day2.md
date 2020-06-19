@@ -12,6 +12,20 @@
 
 #### 6.vm.$data的$錢字號是要做區別，預設代表 vue 提供的功能，沒有特別的意思
 
+#### 7.lifecycle hook沒有非同步的概念。也不要嘗試中斷lifecycle
+
+#### 8.不要用箭頭函式做hook
+    因為在vue的function會需要this，但當用箭頭函式就沒有自己的this(會變外層的this)
+
+#### 9.Vue.js uses an HTML-based template
+
+# Directives
+    指令，放在html標籤上，e.g. v-bind/v-html等
+# v-once
+    資料render過一次後，不用再通知它了，就是當資料改變時，該標籤的內容不連動
+    例如；copyright，是不太會再去變動的資料
+    省效能
+
 # Data and Methods
 
     1.當Vun instance被開啟時候，它會去把data所有找到的屬性去做驅動化
@@ -41,4 +55,4 @@
 
 ### beforeDestroy
 
-    | 模組要被消滅之前做的事 \*自己做 addEventListener 要在這裡就關掉，否則會殘留
+    | 模組要被消滅之前做的事，自己做 addEventListener 要在這裡就關掉，否則會殘留
