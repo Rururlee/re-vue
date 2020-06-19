@@ -12,19 +12,32 @@
 
 #### 6.vm.$data的$錢字號是要做區別，預設代表 vue 提供的功能，沒有特別的意思
 
-#### 7.lifecycle hook沒有非同步的概念。也不要嘗試中斷lifecycle
+#### 7.lifecycle hook 沒有非同步的概念。也不要嘗試中斷 lifecycle
 
-#### 8.不要用箭頭函式做hook
+#### 8.不要用箭頭函式做 hook
+
     因為在vue的function會需要this，但當用箭頭函式就沒有自己的this(會變外層的this)
 
 #### 9.Vue.js uses an HTML-based template
 
 # Directives
+
     指令，放在html標籤上，e.g. v-bind/v-html等
+
 # v-once
-    資料render過一次後，不用再通知它了，就是當資料改變時，該標籤的內容不連動
-    例如；copyright，是不太會再去變動的資料
-    省效能
+
+    | 資料render過一次後，不用再通知它了，就是當資料改變時，該標籤的內容不連動
+    | 例如；copyright，是不太會再去變動的資料
+    | 考慮那些資料不連動，省效能
+
+# Raw HTML - v-html
+
+    | 它會把內容取代掉
+    | 也可用在像noscript的效果
+    | 盡可能不要使用v-html，它可能產生 XSS 攻擊
+    | 使用者輸入資料不要用v-html
+
+    ****使用者輸入這端，用特定標籤去定義這段是甚麼(是圖片、文字..等)，進到後台之後，針對這個標籤去做轉移
 
 # Data and Methods
 
