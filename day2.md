@@ -22,11 +22,18 @@
 
 #### 10.在 template 語法裡允許使用 js 表達式
 
-#### 11.vue 有全域變數白名單
+#### 11.instance & template
+    1.html template + el option
+    //下面兩種是不想要template寫在html上
+    2.el option + template option 
+    3.template options(selector) + vm.$mount
+    
+
+#### 12.vue 有全域變數白名單
+
     *不是所有的JS功能，不是所有的全域參數都能在vue用
     *能用的全域變數不多
     *不要太依賴全域參數
-
 
 # Directives
 

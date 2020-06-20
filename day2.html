@@ -14,8 +14,12 @@
       <!-- <p v-html="text"></p> -->
       <p v-text="text"></p>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+    <!--搭配template:'#page-template'-->
+    <script type="text/x-template" id="page-template">
+      <span style="color:red">This should be red.</span>
+    </script>
+
 
     <script>
       //這是個全域變數
@@ -48,10 +52,14 @@
       // }
 
       let vm = new Vue({
-        el: '#app',
-        template:'<span style="color:red">This should be red.</span>',
+        // el: '#app',
+        // template:'<span style="color:red">This should be red.</span>',//若沒有template會compire編譯el裡的html
+        // template另一個寫法-->選取器
+        template:'#page-template',
         data,
       })
+
+      vm.$mount('#app') //搭配template:'#page-template'
 
       //這叫陳述式
       function aaa() {}
