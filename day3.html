@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day2</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <p v-once>{{ msg }}</p>
+      <p>{{ msg }}</p> -->
+      <p>{{ html }}</p>
+      <!-- <p v-html="html"></p> -->
+      <!-- <p v-html="text"></p> -->
+      <p v-text="text"></p>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+    <!--搭配template:'#page-template'-->
+    <script type="text/x-template" id="page-template">
+      <span style="color:red">This should be red.</span>
+    </script>
+
+
+    <script>
+      //這是個全域變數
+      //console打user會出現資料，但無法在html用{{user}}
+      //全域變數的話，因為vue會優先查它的資料，whitelist of globals 白名單(官網有)
+      //那user沒有在白名單內，所以{{user}}會is not define
+      //vue能用的全域參數不多
+      window.user = 'ruru'
+
+      let data = {
+        msg: 'Hello Vue',
+        html: '<span style="color:red">This should be red.</span>',
+        text: '<img src="aaa.jpg" onerror="window.alert(`圖片失效`)">',
+      }
+
+      //Object.freeze(data)
+      //data freeze住了，在console就不會寫是observer，在console也不能改資料、響應資料
+      //專案時不要亂用
+
+      //思考一個商品圖片區塊做資料連動，它應會被賦予甚麼資料
+      // let pokemon = {
+      //   img:'src',
+      //   title:'src', //img上的alt
+      //   description:'str',
+      //   price:{
+      //     type:'str', //價錢可能有分原價/折價
+      //     count:'number' //多少錢
+      //   },
+      //   count:'number' //存貨數量
+      // }
+
+      let vm = new Vue({
+        // el: '#app',
+        // template:'<span style="color:red">This should be red.</span>',//若沒有template會compire編譯el裡的html
+        // template另一個寫法-->選取器
+        template:'#page-template',
+        data,
+      })
+
+      vm.$mount('#app') //搭配template:'#page-template'
+
+      //這叫陳述式
+      function aaa() {}
+
+      //這叫表達式
+      let bbb = function () {}
+
+      let number = 1
+      //三元表達式
+      console.log(number ? 'yes' : 'or')
+    </script>
+  </body>
+</html>
