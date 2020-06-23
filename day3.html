@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>day3</title>
     <style>
-      #app{
+      #app {
         font-size: 2rem;
       }
     </style>
@@ -13,8 +13,8 @@
   <body>
     <div id="app">
       computed:{{ reversedMessage }}
-      <br>
-      methods:{{ reversedMessage2() }}
+      <br />
+      <!-- methods:{{ reversedMessage1() }} -->
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
@@ -24,15 +24,27 @@
           message: 'Hello',
         },
         computed: {
+          m1() {
+            console.log('m1')
+            return this.message + 1
+          },
+          m2() {
+            console.log('m2')
+            return this.message + 1
+          },
           reversedMessage: function () {
             console.log('computed')
             return this.message.split('').reverse().join('')
           },
         },
         methods: {
-          reversedMessage2: function () {
-            console.log('methods')
+          reversedMessage1: function () {
+            console.log('methods1')
             return this.message.split('').reverse().join('')
+          },
+          reversedMessage2: function () {
+            console.log('methods2')
+            console.log(this.message.split('').reverse().join(''))
           },
         },
       })
