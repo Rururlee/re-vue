@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day3</title>
+    <style>
+      #app {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <p>
+        Ask a yes/no question:
+        <input v-model="question" />
+      </p>
+      <p>{{ answer }}</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script>
+      let vm = new Vue({
+        el: '#app',
+        data: {
+          question: '',
+          answer: 'I cannot give you an answer until you ask a question!',
+        },
+        watch: {
+          // whenever question changes, this function will run
+          question: function (newQuestion, oldQuestion) {
+            this.answer = 'Waiting for you to stop typing...'
+            this.debouncedGetAnswer()
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
