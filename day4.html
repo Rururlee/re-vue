@@ -12,51 +12,27 @@
   </head>
   <body>
     <div id="app">
-      {{ newMsg }}
-      <br />
-      computed:{{ reversedMessage }}
-      <br />
-      <!-- methods:{{ reversedMessage1() }} -->
+      <a :href="link.href" :target="link.target">{{ link.content }}</a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
       let vm = new Vue({
         el: '#app',
-        data: {
-          message: 'Hello',
-        },
-        computed: {
-          newMsg: {
-            get() {
-              return 'get ' + this.message
+        data() {
+          return {
+            link: {
+              href: 'https://rurulee.com/',
+              target: '_blank',
+              content: 'Ruru Studio',
             },
-            //資料變動流程是:set->data.message->newMsg
-            set(val) {
-              this.message = val + ' set'
+            // class做成一包物件
+            classItem: {
+              aaa: true,
+              bbb: true,
+              c_cc: true,
+              'd-dd': true, //有dashd的key要用引號包住
             },
-          },
-          m1() {
-            console.log('m1')
-            return this.message + 1
-          },
-          m2() {
-            console.log('m2')
-            return this.m1 + 1
-          },
-          reversedMessage: function () {
-            console.log('computed')
-            return this.message.split('').reverse().join('')
-          },
-        },
-        methods: {
-          reversedMessage1: function () {
-            console.log('methods1')
-            return this.message.split('').reverse().join('')
-          },
-          reversedMessage2: function () {
-            console.log('methods2')
-            console.log(this.message.split('').reverse().join(''))
-          },
+          }
         },
       })
     </script>
