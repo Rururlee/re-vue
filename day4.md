@@ -26,4 +26,20 @@
 
 #### 4.要讓後端控制樣式用 class，選取的方式
 
-#### 5.用物件綁定 class 比較好控管
+#### 5.可用物件、陣列綁定 class
+
+    | 物件綁定:
+        * 給個key，後面的value可表示要或不要添加這個class(true/false)
+        * 新增key比較麻煩
+        * 比陣列型靈活一點
+
+    | 陣列綁定:
+        * 陣列則是可以表示有哪些class，但不能控制要或不要
+        * 不要某個class時，只能刪掉，被刪掉的class要加回來比較麻煩
+        * 任意加class很方便
+
+#### 6.可用 computed 控制 class
+
+#### 7.如果有個常駐的class，不要寫在vue，直接寫在class上就好
+    * 假設一個永遠在的class -> d-flex，直接寫死在class就好
+    * <p class="d-flex" :class="classItem"></p>

@@ -8,11 +8,30 @@
       #app {
         font-size: 2rem;
       }
+      #app.active {
+        background-color: pink;
+      }
+      .text-danger {
+        border: 3px solid brown;
+      }
+      .aaa {
+        color: rgb(248, 141, 141);
+      }
+      .bbb {
+        padding: 1rem;
+        line-height: 5rem;
+      }
     </style>
   </head>
   <body>
-    <div id="app">
-      <a :href="link.href" :target="link.target">{{ link.content }}</a>
+    <div id="app" :class="{ active:isActive , 'text-danger':hasError }">
+      <a :class="classItem" :href="link.href" :target="link.target">{{ link.content }}</a>
+      <p :class="classArray">陣列class</p>
+      <!-- array syntax -->
+      <p :class="[activeClass,errorClass]">array syntax</p>
+
+      <!-- 陣列表達式(比較不推，code變太複雜) -->
+      <p class="app" :class="classTernary">陣列表達式</p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
@@ -25,13 +44,32 @@
               target: '_blank',
               content: 'Ruru Studio',
             },
-            // class做成一包物件
+
+            // 1. class設true/false讓它添加或不添加此class
+            isActive: true,
+            hasError: false,
+
+            // 2. class做成一包物件(最推薦作法)
             classItem: {
               aaa: true,
               bbb: true,
               c_cc: true,
               'd-dd': true, //有dashd的key要用引號包住
             },
+
+            // 3.陣列寫法
+            classArray: ['arr1', 'arr2', 'arr3'],
+
+            // 4. Array Syntax
+            activeClass: 'active',
+            errorClass: 'text-danger',
+
+            // 5.陣列表達式(比較不推，code變太複雜，看情況還是可使用)  
+             //第一個是三元表達，後面兩個純class
+            classTernary: [this.isActive ? 'aaa' : 'bbb' , 'bbb', 'ccc']
+           
+            
+
           }
         },
       })
