@@ -41,23 +41,28 @@
 
 #### 6.可用 computed 控制 class
 
-#### 7.如果有個常駐的class，不要寫在vue，直接寫在class上就好
+#### 7.如果有個常駐的 class，不要寫在 vue，直接寫在 class 上就好
+
     * 假設一個永遠在的class -> d-flex，直接寫死在class就好
     * <p class="d-flex" :class="classItem"></p>
 
-    
-#### 8.綁定style
+#### 8.綁定 style
+
     * 若:style與普通style同在一個tag
         (1)style在前，v-bind:style在後，v-bind會覆蓋普通style
         (2)v-bind:style在前，style在後，兩個style會保留(但是同樣的style時，優先保留綁定的style)
-       
-#### 9.fontSize做成資料時不要帶px，render再帶
+
+
+#### 9.fontSize 做成資料時不要帶 px，render 再帶
+
     <div :style=""{ color:activeColor,fontSize:fontSize + 'px'}>
         data:{
             activeColor:'red'
             fontSize:30 //這部分才可以做運算
         }
-#### 10.物件型style
+
+#### 10.物件型 style
+
     <div v-bind:style="styleObject"></div>
     data: {
         styleObject: {
@@ -65,6 +70,8 @@
             fontSize: '13px'
         }
     }
-#### 11.陣列型style
+
+#### 11.陣列型 style
+
     <div :style="[styleArr1,styleArr2]"></div>
     * 若有相同style，後者會覆蓋前者
