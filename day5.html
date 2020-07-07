@@ -18,14 +18,30 @@
     <!--必須緊緊相依-->
     <h1 v-else>xxx</h1>
 
+    判斷dataMapping的type --> {{ content }}
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
   <script>
+    //建一個物件
+    const dataMapping = {
+      A: 'A content',
+      B: 'B content',
+      C: 'C content'
+    }
+
     let vm = new Vue({
       el: '#app',
       data: {
         show: true,
+        type: 'A'
       },
+      computed: {
+        //這個方法比在html寫多個if-else tag還簡潔
+        content() {
+          //指向 vm的data裡的type
+          return dataMapping[this.type] || 'NO content'
+        }
+      }
     })
   </script>
 </body>

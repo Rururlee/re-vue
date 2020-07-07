@@ -1,64 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>day3 - 資料計算與偵聽</title>
-    <style>
-      #app {
-        font-size: 2rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      {{ newMsg }}
-      <br />
-      computed:{{ reversedMessage }}
-      <br />
-      <!-- methods:{{ reversedMessage1() }} -->
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
-    <script>
-      let vm = new Vue({
-        el: '#app',
-        data: {
-          message: 'Hello',
-        },
-        computed: {
-          newMsg: {
-            get() {
-              return 'get ' + this.message
-            },
-            //資料變動流程是:set->data.message->newMsg
-            set(val) {
-              this.message = val + ' set'
-            },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>day3 - 資料計算與偵聽</title>
+  <style>
+    #app {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    {{ newMsg }}
+    <br />
+    computed:{{ reversedMessage }}
+    <br />
+    <!-- methods:{{ reversedMessage1() }} -->
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello',
+      },
+      computed: {
+        newMsg: {
+          get() {
+            return 'get ' + this.message
           },
-          m1() {
-            console.log('m1')
-            return this.message + 1
-          },
-          m2() {
-            console.log('m2')
-            return this.m1 + 1
-          },
-          reversedMessage: function () {
-            console.log('computed')
-            return this.message.split('').reverse().join('')
+          //資料變動流程是:set->data.message->newMsg
+          //這裡再重看影片
+          set(val) {
+            this.message = val + ' set'
           },
         },
-        methods: {
-          reversedMessage1: function () {
-            console.log('methods1')
-            return this.message.split('').reverse().join('')
-          },
-          reversedMessage2: function () {
-            console.log('methods2')
-            console.log(this.message.split('').reverse().join(''))
-          },
+        m1() {
+          console.log('m1')
+          return this.message + 1
         },
-      })
-    </script>
-  </body>
+        m2() {
+          console.log('m2')
+          return this.m1 + 1
+        },
+        reversedMessage: function () {
+          console.log('computed')
+          return this.message.split('').reverse().join('')
+        },
+      },
+      methods: {
+        reversedMessage1: function () {
+          console.log('methods1')
+          return this.message.split('').reverse().join('')
+        },
+        reversedMessage2: function () {
+          console.log('methods2')
+          console.log(this.message.split('').reverse().join(''))
+        },
+      },
+    })
+  </script>
+</body>
+
 </html>

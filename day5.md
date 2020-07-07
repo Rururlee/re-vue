@@ -4,7 +4,7 @@
     <h1 v-if="show">Hello vue</h1>
     <h1 v-else>xxx</h1>
 
-#### 3.v-if初學 vs 進階寫法 ---> template 包起來
+#### 2.v-if初學 vs 進階寫法 ---> template 包起來
     * 初學
     <h1 v-if="show">Hello vue</h1>
     <h1 v-if="show">description</h1>
@@ -18,3 +18,9 @@
         <h1 v-if="show">xxx</h1>
         <h1 v-if="show">ooo</h1>
     </template>
+
+#### 3.如果是做比較多的使用者互動時->v-show
+    例如：移進去打開、移走關掉，按開按關這種顯示。
+    使用v-show去做功能
+    * v-show是使用display控制
+    * 是dom渲染時，比較後期的操作

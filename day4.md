@@ -23,6 +23,7 @@
     | e.g. href、target、input 的 type 等等
     | 在屬性前綁上v-bind即可 (v-bind:href)
     | v-bind縮寫為冒號: (:href)
+    ｜有冒號就是綁定、連動資料的意思
 
 #### 4.要讓後端控制樣式用 class，選取的方式
 
