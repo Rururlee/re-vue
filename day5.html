@@ -14,11 +14,65 @@
 
 <body>
   <div id="app">
+    <h1>1.</h1>
     <h1 v-if="show">Hello vue</h1>
     <!--必須緊緊相依-->
     <h1 v-else>xxx</h1>
 
     判斷dataMapping的type --> {{ content }}
+
+    <br>
+    <br>
+
+    <h1>2.</h1>
+    <!--↓↓↓1.這是新手的做法，用dom控制畫面(inline-style)，我們應該要做到資料去控制畫面-->
+    <!-- 
+      用v-show控制顯示隱藏比v-if有效率<br>
+      <div v-show="show">
+      Now you see mee
+    </div>
+    <div v-show="!show">
+      Now you don't
+    </div> -->
+    <!--↓↓↓2.用這方法控制顯示隱藏元素-->
+    用判斷式控制顯示隱藏
+    <div>
+      {{show ? "Now you see me" : "Now you don't"}}
+    </div>
+
+
+    <br>
+    <br>
+
+    <h1>3.</h1>
+    <!--v-show會做出來-->
+    <!--v-if在切換true/false都會重新created所以切換資料的成本高-->
+    <!--v-show一開始就created，在切換時已經不會再created而是用原本有的元素作切換-->
+    <!--所以v-show雖然created成本高，但切換成本低-->
+    <div v-if="show2">
+      <text-component />
+    </div>
+    <div v-show="show2">
+      <text-component />
+    </div>
+
+    <br>
+    <br>
+
+    <h1>4.</h1>
+    <!--for in-->
+    <!--user是自取的名字，會抓到物件的key，這個物件在userListArray陣列裡-->
+    <div v-for="user in userListArray">{{ user.name }}</div>
+    <br>
+    | 也可以抓出index(看程式碼)<br>
+    array:
+    <h2 v-for="value,index in userListArray">{{ value.name }}</h2>
+    object:
+    <h2 v-for="value,key in userListObj">{{ key }}</h2>
+    <br>
+    | 也可計算數字:
+    <span v-for="num in 10">{{ num }},</span>
+
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
   <script>
@@ -28,12 +82,35 @@
       B: 'B content',
       C: 'C content'
     }
+    //建一個component來比較v-if和v-show
+    Vue.component('TextComponent', {
+      template: '<div>text</div>',
+      created() {
+        console.log('text')
+      }
+    })
 
     let vm = new Vue({
       el: '#app',
       data: {
         show: true,
-        type: 'A'
+        show2: false,
+        type: 'A',
+        userListArray: [
+          {
+            name: 'Ruru',
+            gender: 'female'
+          },
+          {
+            name: 'Brown',
+            gender: 'male'
+          }
+        ],
+        userListObj: {
+          ruru: 'female',
+          brown: 'male'
+        }
+
       },
       computed: {
         //這個方法比在html寫多個if-else tag還簡潔
