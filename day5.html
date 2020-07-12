@@ -60,18 +60,26 @@
     <br>
 
     <h1>4.</h1>
-    <!--for in-->
+    <!--for in / for of (alex偏用for of)-->
     <!--user是自取的名字，會抓到物件的key，這個物件在userListArray陣列裡-->
     <div v-for="user in userListArray">{{ user.name }}</div>
     <br>
     | 也可以抓出index(看程式碼)<br>
     array:
-    <h2 v-for="value,index in userListArray">{{ value.name }}</h2>
+    <h2 v-for="value,index of userListArray" :key="value.name">{{ value.name }}</h2>
     object:
-    <h2 v-for="value,key in userListObj">{{ key }}</h2>
+    <h2 v-for="value,key of userListObj" :key="key">{{ key }}</h2>
     <br>
     | 也可計算數字:
     <span v-for="num in 10">{{ num }},</span>
+
+    <br>
+    <br>
+
+    <h1>5.</h1>
+    | 使用computed做出篩選資料，只顯示性別為男生的資料(computed代替用v-for搭配v-if)<br>
+    <h4 v-for="value of getUserGender">{{ value.name }}</h4>
+
 
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
@@ -104,6 +112,10 @@
           {
             name: 'Brown',
             gender: 'male'
+          },
+          {
+            name: 'Jack',
+            gender: 'male'
           }
         ],
         userListObj: {
@@ -117,6 +129,14 @@
         content() {
           //指向 vm的data裡的type
           return dataMapping[this.type] || 'NO content'
+        },
+
+        //要做出只顯示性別為男生的資料
+        //覺得在tag上v-for搭配v-show太麻煩的話，那就用computed做資料篩選控制顯示隱藏的功能
+        getUserGender() {
+          return this.userListArray.filter((user) => {
+            return user.gender === 'male'
+          })
         }
       }
     })

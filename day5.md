@@ -42,3 +42,30 @@
 #### 6.List rendering
     * 可依照陣列、物件、數量render
     * 數量多用陣列包裝資料；用物件的話，有時候後端傳過來資料，key比較不容易掌控
+
+#### 7.綁定key
+    * v-for有切換行為時建議設key值
+    * key必須設置為專屬於這筆資料的內容，不要設index為key，index只是順序
+    * 兩筆資料可能因為順序不同所以資料不同。用內容去當key，去做比對判斷比較準
+    * 後端資料回有id(或primary)，要請後端帶上這個值，讓我們在v-for時可以以這個值設key
+
+#### 8.想改變array需用以下方法(這個在vue 2才有的問題,vue3沒有)
+    push()
+    pop()
+    shift()
+    unshift()
+    splice()
+    sort()
+    reverse()
+
+#### 9.陣列無法透過操作index去修改資料
+    例如：array[0] = {name:ruru}
+
+#### 10.一個tag上不要同時做v-for和v-if，這會耗費資源
+    * 如果需要全部列出來，再去做隱藏，用v-for配v-show
+      v-for跑全部資料，v-show控制顯示隱藏
+    * 不要用v-for，再用v-if做篩選顯示隱藏
+    * 但不同層級是可以的，不要做在同一層就好
+    * v-for搭配v-show太麻煩的話，直接做computed去做篩選
+
+    
