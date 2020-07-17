@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>day6 - 事件偵聽綁定</title>
+  <style>
+    #app {
+      padding: 1rem 3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 這功能可用在輪播 -->
+    <!-- <h3>{{ count }}</h3>
+    <button @click="count-=1">Prev</button>
+    <button @click="count+=1">Next</button> -->
+
+    <!-- 4顆按鈕 這可用在切換tab -->
+    <!-- 減1是為了從0開始->0123，沒減1會是->1234 -->
+    <!-- <button v-for="num of total" @click="count = num-1">{{ num - 1 }}</button>
+    <h3>{{ count }}</h3> -->
+
+
+    <!-- 
+      第一種做法 -- 功能寫在＠click上
+      1.讓資料全部show出再用css控制誰顯示誰隱藏。當index====當前的count才秀出 這也可用在tab切換
+      2.當點擊時，當前的count等於這個button的index
+    -->
+    <button v-for="(content,index) of contents" @click="count = index">{{ index }}</button>
+    <h3 v-for="(content,index) of contents" v-show="index === count">{{ content }}</h3>
+
+    <!-- 
+      第二種做法 -- 用dataset裡面的index當比對資料
+      1.製作一個事件，用methods 
+      2.綁定data-index，當點擊時便會在mouseEvent裡的dataset找到設定的data-index資料 
+    -->
+    <!-- <button v-for="(content,index) of contents" @click="clickHandler" :data-index="index">{{ index }}</button>
+    <h3 v-for="(content,index) of contents" v-show="index === count">{{ content }}</h3> -->
+
+    <!-- 
+      第三種做法 -- 用index當對比資料(我比較喜歡這方法)
+      1.製作一個事件，用methods 
+      2.clickHandler2帶參數index -> clickHandler2(index)
+    -->
+    <!-- <button v-for="(content,index) of contents" @click="clickHandler2(index,$event)">{{ index }}</button>
+    <h3 v-for="(content,index) of contents" v-show="index === count">{{ content }}</h3> -->
+
+
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        count: 0,
+        total: 4,
+        contents: ['aaa', 'bbb', 'ccc', 'ddd']
+      },
+      methods: {
+        clickHandler(event) {
+          console.log('clickHandler的mouseEvent', event) // mouseEvent事件
+          // 當前的count會等於index
+          this.count = event.target.dataset.index * 1 // 讓字串轉數字；或可用parseInt
+        },
+        clickHandler2(index, $event) {
+          console.log('clickHandler2', $event)
+          console.log('clickHandler2', index) // mouseEvent事件
+          this.count = index
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>
