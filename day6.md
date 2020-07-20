@@ -55,4 +55,4 @@
 
 #### 7.偵聽keyCode
     * 以往使用keycode的偵聽按鍵，但由於各瀏覽器key有些不相容，所以vue提供的方法可相容key監聽
-    * 欲使用ctrl放開的監聽，要使用@keyup.17。不是 ~~keyup.ctrl~~
+    * 由於ctrl/shift/alt這類key是針對有沒有搭配其他key使用，並不是針對本身使用，所以想使用ctrl放開的監聽，要使用@keyup.17。不是 keyup.ctrl
