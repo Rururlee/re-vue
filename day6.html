@@ -50,6 +50,25 @@
     <h3 v-for="(content,index) of contents" v-show="index === count">{{ content }}</h3> -->
 
 
+    <!-- 監聽順序 -->
+    <!-- click.capture.stop.once , alex傾向寫程式用一個狀態去控制比較方便，而不用once這個方法-->
+    click.capture.stop.once
+    <div @click.capture.stop.once="nestClick(1)" style="border:1px solid #000;padding:10px">
+      <a href="#" @click.capture.stop.once="nestClick(2)" style="border:1px solid pink;padding:5px 20px">
+        <button @click.capture.stop.once="nestClick(3)">button</button>
+      </a>
+    </div><br>
+
+
+
+    <!--有做@scroll可以加passive提高效能-->
+    @scroll.passive
+    <div @scroll.passive="scrollHandler" style="height: 500px;border:1px solid; overflow: scroll;">
+      <div style="height: 1300px;"></div>
+    </div><br>
+
+
+    <input @keyup.17="nestClick('up')" type="text">
 
   </div>
 
@@ -72,10 +91,17 @@
           console.log('clickHandler2', $event)
           console.log('clickHandler2', index) // mouseEvent事件
           this.count = index
+        },
+        nestClick(num) {
+          console.log(num)
+        },
+        scrollHandler() {
+          console.log('scroll')
         }
       }
 
     })
+
   </script>
 </body>
 

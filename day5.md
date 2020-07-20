@@ -28,7 +28,7 @@
 #### 4.v-if VS v-show
     [v-if]
     * v-if是拔dom，元素會真正從dom上消失
-    * 一開始的量很大，用v-if，但切換頻率要小
+    * 一開始的量很大的話用v-if，但是切換頻率要小
     * v-if為不立即做，因為他還得先經過true/false的判斷
     * 不立即做的話，在切換機率不高的地方，就可以省資源
 
@@ -47,7 +47,7 @@
     * v-for有切換行為時建議設key值
     * key必須設置為專屬於這筆資料的內容，不要設index為key，index只是順序
     * 兩筆資料可能因為順序不同所以資料不同。用內容去當key，去做比對判斷比較準
-    * 後端資料回有id(或primary)，要請後端帶上這個值，讓我們在v-for時可以以這個值設key
+    * 後端若資料回有id(或primary)，要請後端帶上這個值，讓我們在v-for時可以以這個值設key
 
 #### 8.想改變array需用以下方法(這個在vue 2才有的問題,vue3沒有)
     push()
@@ -68,4 +68,29 @@
     * 但不同層級是可以的，不要做在同一層就好
     * v-for搭配v-show太麻煩的話，直接做computed去做篩選
 
+    <h4 v-for="value of getUserGender">{{ value.name }}</h4>
+
+    //data
+    serListArray: [
+          {
+            name: 'Ruru',
+            gender: 'female'
+          },
+          {
+            name: 'Brain',
+            gender: 'male'
+          },
+          {
+            name: 'Jack',
+            gender: 'male'
+          }
+    ],
+
+    //computed
+    //要做出只顯示性別為男生的資料
+    getUserGender() {
+        return this.userListArray.filter((user) => {
+            return user.gender === 'male'
+        })
+    }
     
