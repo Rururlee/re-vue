@@ -67,8 +67,11 @@
       <div style="height: 1300px;"></div>
     </div><br>
 
+    監聽ctrl放開
+    <input @keyup.17="nestClick('ctrl up')" type="text"><br>
 
-    <input @keyup.17="nestClick('up')" type="text">
+    監聽滑鼠右鍵點擊但不跳出右鍵選單
+    <input @click.right.prevent="nestClick('right')" type="text"><br>
 
   </div>
 
