@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day7 - 雙向資料綁定</title>
+    <style>
+        #app {
+            padding: 1rem 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+        <div v-for="content in list">
+            {{ content }}
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                //做八筆顯示4筆(像分頁的功能)
+                list: ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg', 'hhh'],
+                perPage: 4,
+                nowPage: 1
+            },
+            //產資料 computed
+            computed: {
+                pageList() {
+
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
