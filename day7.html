@@ -14,12 +14,23 @@
 
 <body>
     <div id="app">
-        <button v-show="nowPage > 1" @click="nowPage-=1">Prev</button>
-        <div v-for="content in pageList">
-            {{ content }}
+        <p>{{ text }}</p>
+        <p><input type="text" v-model="text"></p>
+        <p><textarea name="" id="" v-model="text"></textarea></p>
+        <hr>
+        <p><input type="checkbox" v-model="edm">訂閱EDM</p>
+        <div>
+            單選
+            <p><input type="radio" v-model="checkSingle" value="A">A</p>
+            <p><input type="radio" v-model="checkSingle" value="B">B</p>
+            <p><input type="radio" v-model="checkSingle" value="C">C</p>
         </div>
-        <button v-show="nowPage < totalPage" @click="nowPage+=1">Next</button>
-
+        <div>
+            多選(data裡使用陣列，當勾選時會將資料加進陣列)
+            <p><input type="checkbox" v-model="checkArr" value="A">A</p>
+            <p><input type="checkbox" v-model="checkArr" value="B">B</p>
+            <p><input type="checkbox" v-model="checkArr" value="C">C</p>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
@@ -27,29 +38,11 @@
         new Vue({
             el: '#app',
             data: {
-                //-- 做八筆顯示4筆(像分頁的功能) 開始 --//
-                list: ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg', 'hhh'],
-                perPage: 4,
-                nowPage: 1
-                //-- 做八筆顯示4筆(像分頁的功能) 結束 --//
+                text: 'Ruru GO',
+                edm: true,
+                checkSingle: 'A',//連動input radio的value
+                checkArr: []
             },
-            //產資料 computed
-            computed: {
-                //陣列裡切四筆出來
-                pageList() {
-                    //從第0筆開始取：假設第一頁從第0筆顯示，第二頁從第四筆顯示
-                    let start = (this.nowPage - 1) * 4
-                    //slice(start,end) 提取start到end的資料
-                    //slice(起始點,起始點+4) 這樣就會是展示第一頁.第二頁.第三頁...類推
-                    return this.list.slice(start, start + this.perPage)
-
-                },
-                //先算出總共會有幾頁
-                totalPage() {
-                    //無條件進位
-                    return Math.ceil(this.list.length / 4)
-                }
-            }
         })
 
     </script>
