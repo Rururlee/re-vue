@@ -15,7 +15,7 @@
 <body>
     <div id="app">
         <p>{{ text }}</p>
-        <p><input type="text" v-model="text"></p>
+        <p><input type="text" v-model.trim="text">加上trim，可去頭尾空白</p>
         <p><textarea name="" id="" v-model="text"></textarea></p>
         <hr>
         <p><input type="checkbox" v-model="edm">訂閱EDM</p>
@@ -31,6 +31,24 @@
             <p><input type="checkbox" v-model="checkArr" value="B">B</p>
             <p><input type="checkbox" v-model="checkArr" value="C">C</p>
         </div>
+        這個直接取value都是字串，會有轉型(型態)的問題，但v-model綁上修飾符number，資料就會變成數值(從vue的主控台可看到)
+        <div>
+            <p><input type="radio" value="0" v-model.number="gender">女</p>
+            <p><input type="radio" value="1" v-model.number="gender">男</p>
+            <p><input type="radio" value="2" v-model.number="gender">無性別</p>
+        </div>
+        <div>
+            <p>select</p>
+            <select v-model="selected">
+                <!--disabled的話下拉選單初始顯示的項目會是A，所以這是個必選的select-->
+                <option disabled value="">Please select one</option>
+                <option value="AA">A</option>
+                <option value="BB">B</option>
+                <option value="CC">C</option>
+            </select>
+            <span>Selected: {{ selected }}</span>
+        </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
@@ -41,7 +59,9 @@
                 text: 'Ruru GO',
                 edm: true,
                 checkSingle: 'A',//連動input radio的value
-                checkArr: []
+                checkArr: [],
+                gender: 0,
+                selected: ''
             },
         })
 
