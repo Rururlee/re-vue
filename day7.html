@@ -48,6 +48,10 @@
             </select>
             <span>Selected: {{ selected }}</span>
         </div>
+        <div>
+            <p>所有tag都可觸發focus和blur事件</p>
+            <div id="blurDiv" tabIndex="1">這是個div，點我觸發focus/blur</div>
+        </div>
 
     </div>
 
@@ -63,6 +67,16 @@
                 gender: 0,
                 selected: ''
             },
+        })
+
+
+        // 測試div監聽focus
+        document.getElementById('blurDiv').addEventListener('focus', function () {
+            console.log('focus')
+        })
+        // 測試div監聽blur
+        document.getElementById('blurDiv').addEventListener('blur', function () {
+            console.log('blur')
         })
 
     </script>
