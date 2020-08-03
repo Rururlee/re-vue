@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day8 - 第一季總回顧</title>
+    <style>
+        #app {
+            padding: 1rem 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        按enter時能輸入資料進去，然後資料清空
+        @compositionstart不能成功觸發，mac先改用輸入按鈕，不要監聽enter
+        <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
+            @keyup.enter="inputHandler">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                inputText: '',
+                list: [],
+                compositionStatus: false,//預設false,表示還沒開始輸入法的輸入
+            },
+            methods: {
+                cstartHanlder() {
+                    this.compositionStatus = true
+                },
+                cendHanlder() {
+                    this.compositionStatus = false
+                },
+                inputHandler() {
+                    if (this.compositionStatus) return false
+                    //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
+                    this.list.push({
+                        content: this.inputText
+                    })
+                    //推進去後input清掉資料
+                    this.inputText = ''
+
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
