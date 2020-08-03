@@ -1,4 +1,4 @@
-# day8 - 第一季總回顧
+# day8 - 第一季總回顧 - 用CRUD實作todolist
 
 #### 1.CRUD
     * Create / Read / Delete / Update

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>day8 - 第一季總回顧</title>
+    <title>day8 - 第一季總回顧 - 用CRUD實作todolist</title>
     <style>
         #app {
             padding: 1rem 3rem;
@@ -14,42 +14,55 @@
 
 <body>
     <div id="app">
-        按enter時能輸入資料進去，然後資料清空
-        @compositionstart不能成功觸發，mac先改用輸入按鈕，不要監聽enter
-        <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
-            @keyup.enter="inputHandler">
-    </div>
+        <div>
+            <h2>按enter時能輸入資料進去，然後資料清空</h2>
+            * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
+            <p>
+                <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
+                    @keyup.enter="inputHandler">
+            </p>
+            <div>
+                <div>
+                    沒有資料能做key值的話，能用新增資料時的時間作為key，但還是以後端傳的資料(可能為id)為key比較好
+                    <ul>
+                        <li v-for="item of list" :key="item.timestamp"><input type="checkbox"
+                                v-model="item.status">{{ item.content }}</li>
+                    </ul>
+                </div>
+            </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                inputText: '',
-                list: [],
-                compositionStatus: false,//預設false,表示還沒開始輸入法的輸入
-            },
-            methods: {
-                cstartHanlder() {
-                    this.compositionStatus = true
-                },
-                cendHanlder() {
-                    this.compositionStatus = false
-                },
-                inputHandler() {
-                    if (this.compositionStatus) return false
-                    //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
-                    this.list.push({
-                        content: this.inputText
-                    })
-                    //推進去後input清掉資料
-                    this.inputText = ''
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+            <script>
+                new Vue({
+                    el: '#app',
+                    data: {
+                        inputText: '',
+                        list: [],
+                        compositionStatus: false,//預設false,表示還沒開始輸入法的輸入
+                    },
+                    methods: {
+                        cstartHanlder() {
+                            this.compositionStatus = true
+                        },
+                        cendHanlder() {
+                            this.compositionStatus = false
+                        },
+                        inputHandler() {
+                            if (this.compositionStatus) return false
+                            //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
+                            this.list.push({
+                                timestamp: new Date().getTime(),//作為key使用
+                                status: false,//預設false,表示事項未完成
+                                content: this.inputText
+                            })
+                            //推進去後input清掉資料
+                            this.inputText = ''
 
-                }
-            }
-        })
+                        }
+                    }
+                })
 
-    </script>
+            </script>
 </body>
 
 </html>
