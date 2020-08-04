@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>day8 - 第一季總回顧 - 用CRUD實作todolist</title>
+    <title>day8 - 第一季總回顧 - 用CRUD實作todolist(多了分類)</title>
     <style>
         #app {
             padding: 1rem 3rem;
@@ -14,7 +14,7 @@
 
 <body>
     <div id="app">
-        <h1> 拿index當key用</h1>
+        <h1>多了分類</h1>
         <h2>按enter時能輸入資料進去，然後資料清空</h2>
         * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
         <p>
@@ -25,11 +25,15 @@
             <div>
                 沒有資料能做key值的話，能用新增資料時的時間作為key，但還是以後端傳的資料(可能為id)為key比較好
                 <ul>
+                    <!-- 原本是(item,index) of list , 改成篩選分類。
+                         而因為要做'篩選功能'，所以這裏的key用item就不會出錯，
+                         如果是day8.html用index當key的方法，修改和刪除部分會出錯(對照了index會動錯資料)
+                    -->
                     <li v-for="(item,index) of list" :key="item.timestamp">
 
                         <!-- 要做修改的效果所以包成template並判斷 -->
                         <!-- 1.修改的 -->
-                        <template v-if="editing === index">
+                        <template v-if="editing === item">
                             <input type="text" v-model="editingText">
                             <button @click="completeHandler">完成</button>
                             <button @click="cancelHandler">取消</button>
@@ -38,7 +42,9 @@
                         <template v-else>
                             <input type="checkbox" v-model="item.status">{{ item.content }}
                             <!-- 點擊修改就會讓eaditing==index，上方綁定的editingText也會有資料-->
-                            <button @click="editHanlder(index)">修改</button>
+                            <!-- 原本是index-> editHanlder(item)，改用item-->
+                            <!-- 就是盡量不要用index當key，比較不容易某個環節出錯-->
+                            <button @click="editHanlder(item)">修改</button>
                             <button @click="deleteHandler(index)">刪除</button>
                         </template>
 
@@ -100,17 +106,21 @@
                     //splice只能用index做篩選條件
                     this.list.splice(index, i)
                 },
-                editHanlder(index) {
-                    this.editing = index
-                    this.editingText = this.list[index].content
+                editHanlder(item) { //原本傳index，現改用item
+
+                    //原寫法：用index
+                    // this.editing = index
+
+                    //editing塞進所選中的那筆物件資料
+                    this.editing = item
+
+                    //此時已經可以抓到edition裡的content
+                    this.editingText = this.editing.content
                 },
                 completeHandler() {
-                    // 這是我自己寫的 用index去對
-                    // this.list[index].content = this.editingText
-                    // this.editing = null
-
-                    //Alex寫的，用editing對
-                    this.list[this.editing].content = this.editingText
+                    //能成功抓到edition.content，是因為在editHanlder時，已經為editing塞進物件資料，
+                    //所以這裡可以抓到edition裡的content
+                    this.editing.content = this.editingText
                     this.cancelHandler() //要清空，上面我自己寫的忘了清空
                 },
                 cancelHandler() {
