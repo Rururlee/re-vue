@@ -83,24 +83,24 @@
                 //偷懶先用index 
                 deleteHandler(index) {
 
-                    //這裡用filter寫
+                    //這裡可用filter寫
                     //filter可以用不同key值、不同內容做篩選條件(timestamp也可以做篩選條件)
-                    this.list = this.list.filter((item, i) => {
-                        //item就是物件其中一筆資料(含content/status/timestamp)
+                    // this.list = this.list.filter((item, i) => {
+                    //     //item就是物件其中一筆資料(含content/status/timestamp)
 
-                        //會console跑出所有的i
-                        console.log('i=', i)
-                        //這是要被刪除的index
-                        console.log('index=', index)
-                        //現有的i不等於index才留下來(取得不等於index的i資料)
-                        return i != index
-                    })
+                    //     //會console跑出所有的i
+                    //     console.log('i=', i)
+                    //     //這是要被刪除的index
+                    //     console.log('index=', index)
+                    //     //現有的i不等於index才留下來(取得不等於index的i資料)
+                    //     return i != index
+                    // })
 
                     //也可用splice，因為splice真正刪掉陣列資料(slice不會真的刪除資料)
                     //spice(start,deleteCount)，0為不刪除，這裏做刪除1筆資料
                     //陣列太大的話，splice會比filter效能好一點
                     //splice只能用index做篩選條件
-                    this.list.splice(index, i)
+                    this.list.splice(index, 1)
                 },
                 editHanlder(item) { //原本傳index，現改用item
 

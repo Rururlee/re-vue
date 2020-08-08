@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>day8 - 第一季總回顧 - 用CRUD實作todolist(多了分類)</title>
+    <title>day9 - 基礎模組化 將上次的todolist部分模組化</title>
     <style>
         #app {
             padding: 1rem 3rem;
@@ -22,21 +22,22 @@
 
 <body>
     <div id="app">
-        <h1>多了分類</h1>
-        <h2>按enter時能輸入資料進去，然後資料清空</h2>
-        * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
-        <p>
+        <!-- 模組化2 -->
+        <!-- 內部打事件去通知外部，外部再去處理 -->
+        <input-component @input-push="inputHandler" v-model="inputText"></input-component>
+        <!-- 原本長這樣 -->
+        <!-- <p>
             <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
                 @keyup.enter="inputHandler">
-        </p>
-        <p>
-            <button @click="show = 'all'">全部</button>
-            <button @click="show = 'open'">未完成</button>
-            <button @click="show = 'done'">完成</button>
-        </p>
+        </p> -->
+
+
+        <!-- 模組化1 -->
+        <!--<filter-component /> 字封：可用cli，一般html不支援-->
+        <!--@filter為客製事件-->
+        <filter-component @filter="filterHandler"></filter-component>
         <div>
             <div>
-                沒有資料能做key值的話，能用新增資料時的時間作為key，但還是以後端傳的資料(可能為id)為key比較好
                 <ul>
                     <!-- 原本是(item,index) of list , 改成篩選分類。
                          而因為要做'篩選功能'，所以這裏的key用item就不會出錯，
@@ -69,12 +70,88 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
+
+        //部分html模組化
+        Vue.component('filter-component', {
+            data() {
+                return { //return出這個物件
+                    buttonList: [
+                        { text: '全部', value: 'all' },
+                        { text: '未完成', value: 'open' },
+                        { text: '完成', value: 'doen' },
+                    ]
+                }
+            },
+            template: `
+                <p>
+                    <button v-for="item of buttonList" :key="item.text" @click="$emit('filter',item.value)">
+                        {{ item.text }}
+                    </button>
+                </p>
+            `
+            //$emit('filter',item.value) 解釋為打事件(filter)，順便帶資料(item.value)，通過第二個參數知道
+        })
+
+        //input部分模組化
+        Vue.component('input-component', {
+            props: ['value'],//外面綁v-model，裡面這裡要接v-model資料
+            data() {
+                return {
+                    //輸入法狀態
+                    //此模組的事件用到的資料  
+                    compositionStatus: false
+                }
+            },
+            //模板上的事件也要切進來
+            //組件的v-model，是綁value和input事件(不寫v-model)
+            //v-bind:value="value"，這個引號裡的value要綁上面props的值
+            //模板裡的input，是使用者打字要更新出去的動
+            //而input-push則是將打的字按enter後的動作
+            template: `
+                <p>
+                    <input type="text" 
+                        v-bind:value="value"
+                        v-on:input="$emit('input', $event.target.value)"
+                        @compositionstart="cstartHanlder" 
+                        @compositionend="cendHanlder"
+                        @keyup.enter="inputHandler">
+                </p>
+            `,
+            methods: {
+                cstartHanlder() {
+                    this.compositionStatus = true
+                },
+                cendHanlder() {
+                    this.compositionStatus = false
+                },
+                inputHandler() {
+                    if (this.compositionStatus) return false
+                    //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
+                    // 模組化後，this.list.push事件要改用$emit，因為list是在外層，不屬於input模組的東西
+                    // this.list.push({
+                    //     timestamp: new Date().getTime(),//作為key使用
+                    //     status: false,//預設false,表示事項未完成
+                    //     content: this.inputText
+                    // })
+                    // //推進去後input清掉資料
+                    // this.inputText = ''
+
+                    //改用$emit，因為list是外層的資料
+                    this.$emit('input-push')
+                }
+            }
+        })
+
         new Vue({
             el: '#app',
             data: {
+                // 由於模組了input部分。因此原本外層vue的inputText有兩種想法
+                // 1.inputText屬於外面這層，直接綁進去input-component(外到內) 範例做這個
+                // 2.inputText屬於input-component，應該做在模組裡(內到外)
                 inputText: '',
                 list: [],
-                compositionStatus: false,//預設false,表示還沒開始輸入法的輸入
+                // 由於模組了input部分，compositionStatus: false屬於input模組裡[事件]的資料，所以要放進模組
+                // compositionStatus: false, // 預設false,表示還沒開始輸入法的輸入
                 editing: null,
                 editingText: '',
                 show: 'all'
@@ -97,23 +174,11 @@
                 }
             },
             methods: {
-                cstartHanlder() {
-                    this.compositionStatus = true
-                },
-                cendHanlder() {
-                    this.compositionStatus = false
-                },
-                inputHandler() {
-                    if (this.compositionStatus) return false
-                    //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
-                    this.list.push({
-                        timestamp: new Date().getTime(),//作為key使用
-                        status: false,//預設false,表示事項未完成
-                        content: this.inputText
-                    })
-                    //推進去後input清掉資料
-                    this.inputText = ''
-
+                //模組用事件
+                filterHandler(value) {
+                    //這個事件會打一個item.value出來($emit那裡帶上的)
+                    //所以讓外層vue的show等於帶上的值(all/open/done)
+                    this.show = value
                 },
                 //偷懶先用index 
                 deleteHandler(item) {
@@ -151,6 +216,18 @@
                 cancelHandler() {
                     this.editingText = ''
                     this.editing = null
+                },
+                //之前的inputHanlder所有的資料都是我們自己掌握，事件我們自己處理
+                //而這個inputHanlder前面已經有東西幫我們攔一層了
+                //所以這裡要做的事情只有當初的某些部分，資料的處理
+                inputHandler() {
+                    this.list.push({
+                        timestamp: new Date().getTime(),//作為key使用
+                        status: false,//預設false,表示事項未完成
+                        content: this.inputText
+                    })
+                    //推進去後input清掉資料
+                    this.inputText = ''
                 }
 
             }
