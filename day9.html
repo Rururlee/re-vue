@@ -23,8 +23,12 @@
 <body>
     <div id="app">
         <!-- 模組化2 -->
-        <!-- 內部打事件去通知外部，外部再去處理 -->
+        <!-- 外到內。 內部打事件去通知外部，外部再去處理 -->
+        外到內
         <input-component @input-push="inputHandler" v-model="inputText"></input-component>
+        <!-- 內到外 -->
+        內到外
+        <input-component2 @input-push="input2Handler"></input-component2>
         <!-- 原本長這樣 -->
         <!-- <p>
             <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
@@ -71,6 +75,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
 
+        //filter-component和input-component模組都是內部打事件叫外部 觸發事件
+
         //部分html模組化
         Vue.component('filter-component', {
             data() {
@@ -92,9 +98,9 @@
             //$emit('filter',item.value) 解釋為打事件(filter)，順便帶資料(item.value)，通過第二個參數知道
         })
 
-        //input部分模組化
+        // 1. input部分模組化 - 外到內的方式(inputText屬於外部的，inputText就是輸入框輸入的值)
         Vue.component('input-component', {
-            props: ['value'],//外面綁v-model，裡面這裡要接v-model資料
+            props: ['value'],//要接外面的資料。外面綁v-model，裡面這裡要接v-model資料
             data() {
                 return {
                     //輸入法狀態
@@ -141,6 +147,52 @@
                 }
             }
         })
+
+        // 2. input部分模組化 - 內到外的方式(inputText屬於內部的，inputText就是輸入框輸入的值) 偏好2的寫法
+        Vue.component('input-component2', {
+            data() {
+                return {
+                    //輸入文字
+                    inputText: '',
+                    compositionStatus: false
+                }
+            },
+            template: `
+                <p>
+                    <input type="text" 
+                        v-model="inputText"
+                        @compositionstart="cstartHanlder" 
+                        @compositionend="cendHanlder"
+                        @keyup.enter="inputHandler">
+                </p>
+            `,
+            methods: {
+                cstartHanlder() {
+                    this.compositionStatus = true
+                },
+                cendHanlder() {
+                    this.compositionStatus = false
+                },
+                inputHandler() {
+                    if (this.compositionStatus) return false
+                    this.$emit('input-push', this.inputText) //多帶上這個模組綁定的inputText
+                    this.inputText = ''
+                }
+            }
+        })
+
+        // 
+        Vue.component('list-item-component', {
+            data() {
+                return {
+
+                }
+            },
+            template: ``,
+
+        })
+
+
 
         new Vue({
             el: '#app',
@@ -228,6 +280,17 @@
                     })
                     //推進去後input清掉資料
                     this.inputText = ''
+                },
+                //這個模組的資料會打出來，value去接它
+                input2Handler(value) {
+                    this.list.push({
+                        timestamp: new Date().getTime(),
+                        status: false,
+                        //上面的inputHandler是放this.inputText，那是因為他用的input是綁定vue實體的inputText
+                        //而這裡是模組裡綁定的inputText
+                        content: value
+                    })
+                    //清空值要去模組裡的inputText
                 }
 
             }
