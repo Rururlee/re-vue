@@ -16,10 +16,10 @@
     <div id="app">
         <h1> 拿index當key用</h1>
         <h2>按enter時能輸入資料進去，然後資料清空</h2>
-        * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
+        * safari似乎不支援<br>
         <p>
-            <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
-                @keyup.enter="inputHandler">
+            <input type="text" v-model="inputText" @keydown.enter="inputHandler"
+                @compositionstart="cstartHandler($event)" @compositionend="cendHandler($event)">
         </p>
         <div>
             <div>
@@ -38,7 +38,7 @@
                         <template v-else>
                             <input type="checkbox" v-model="item.status">{{ item.content }}
                             <!-- 點擊修改就會讓eaditing==index，上方綁定的editingText也會有資料-->
-                            <button @click="editHanlder(index)">修改</button>
+                            <button @click="editHandler(index)">修改</button>
                             <button @click="deleteHandler(index)">刪除</button>
                         </template>
 
@@ -60,13 +60,18 @@
                 editingText: ''
             },
             methods: {
-                cstartHanlder() {
+                cstartHandler(event) {
                     this.compositionStatus = true
+                    console.log('輸入中 = ', event)
                 },
-                cendHanlder() {
+                cendHandler(event) {
                     this.compositionStatus = false
+                    console.log('輸入完成 = ', event)
                 },
                 inputHandler() {
+                    // input的值不能為空
+                    if (this.inputText == '') return false
+                    // true的話是還在輸入文字中，那就不用讓他發送資料(回傳false)
                     if (this.compositionStatus) return false
                     //推資料進list(包成object,不建議用陣列放一般資料，文字、數字基本資料)
                     this.list.push({
@@ -100,7 +105,7 @@
                     //splice只能用index做篩選條件
                     this.list.splice(index, 1)
                 },
-                editHanlder(index) {
+                editHandler(index) {
                     this.editing = index
                     this.editingText = this.list[index].content
                 },

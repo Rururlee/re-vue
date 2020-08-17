@@ -24,10 +24,10 @@
     <div id="app">
         <h1>多了分類</h1>
         <h2>按enter時能輸入資料進去，然後資料清空</h2>
-        * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
+        * safari似乎不支援compositionend<br>
         <p>
             <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
-                @keyup.enter="inputHandler">
+                @keydown.enter="inputHandler">
         </p>
         <p>
             <button @click="show = 'all'">全部</button>

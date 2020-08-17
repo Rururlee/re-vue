@@ -16,10 +16,10 @@
     <div id="app">
         <h1>不拿index當key用</h1>
         <h2>按enter時能輸入資料進去，然後資料清空</h2>
-        * mac先上@compositionstart不能成功觸發，所以mac改用輸入按鈕，不要監聽enter<br>
+        * safari似乎不支援<br>
         <p>
-            <input type="text" v-model="inputText" @compositionstart="cstartHanlder" @compositionend="cendHanlder"
-                @keyup.enter="inputHandler">
+            <input type="text" v-model="inputText" @keydown.enter="inputHandler" @compositionstart="cstartHanlder"
+                @compositionend="cendHanlder">
         </p>
         <div>
             <div>
@@ -110,11 +110,11 @@
                     //editing塞進所選中的那筆物件資料
                     this.editing = item
 
-                    //此時已經可以抓到edition裡的content
+                    //此時已經可以抓到editing裡的content
                     this.editingText = this.editing.content
                 },
                 completeHandler() {
-                    //能成功抓到edition.content，是因為在editHanlder時，已經為editing塞進物件資料，
+                    //能成功抓到editing.content，是因為在editHanlder時，已經為editing塞進物件資料，
                     //所以這裡可以抓到edition裡的content
                     this.editing.content = this.editingText
                     this.cancelHandler() //要清空，上面我自己寫的忘了清空

@@ -38,9 +38,13 @@
 #### 8.checkbox能指定當true/false時要傳什麼資料
     * 使用情境：當打api，遇到後端要求true/false傳xxx資料時，可用這個方法，快速又方便
     * tag上可加上true-value="後端要求的資料" false-value="後端要求的資料"
-    <input type="radio" v-model="toggle" true-value="yes" false-value="no">
-    * true-value/false-value不會操作value值，若要value值的話要用radio input
-    <input type="radio" v-model="pick" v-bind:value="a">
+        <input type="checkbox" v-model="toggle" true-value="yes" false-value="no">
+        // 當選中時
+        vm.toggle === 'yes'
+        // 當沒有選中時
+        vm.toggle === 'no'
+    * true-value/false-value不會操作value值，若要確保兩個值中的一個值能夠被傳出去的話，要用radio input，如下：
+        <input type="radio" v-model="pick" v-bind:value="a">
 
 #### 9.v-model.lazy
     * 當綁定有加上lazy的tag，在資料輸入完當下不會連動更新其他資料，而是焦點離開該tag才觸發其他地方更新資料

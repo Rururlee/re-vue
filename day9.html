@@ -43,30 +43,12 @@
         <div>
             <div>
                 <ul>
-                    <!-- 原本是(item,index) of list , 改成篩選分類。
-                         而因為要做'篩選功能'，所以這裏的key用item就不會出錯，
-                         如果是day8.html用index當key的方法，修改和刪除部分會出錯(對照了index會動錯資料)
-                    -->
-                    <li v-for="(item,index) of filterList" :key="item.timestamp">
-
-                        <!-- 要做修改的效果所以包成template並判斷 -->
-                        <!-- 1.修改的 -->
-                        <template v-if="editing === item">
-                            <input type="text" v-model="editingText">
-                            <button @click="completeHandler">完成</button>
-                            <button @click="cancelHandler">取消</button>
-                        </template>
-                        <!-- 2.顯示的 -->
-                        <template v-else>
-                            <input type="checkbox" v-model="item.status">{{ item.content }}
-                            <!-- 點擊修改就會讓eaditing==index，上方綁定的editingText也會有資料-->
-                            <!-- 原本是index-> editHanlder(item)，改用item-->
-                            <!-- 就是盡量不要用index當key，比較不容易某個環節出錯-->
-                            <button @click="editHanlder(item)">修改</button>
-                            <button @click="deleteHandler(item)">刪除</button>
-                        </template>
-
+                    <!--v-for哪一層，key就綁哪一層-->
+                    <li is="list-item-component" v-for="item of filterList" :key="item.timestamp" :item="item"
+                        :editing="editing" @delete="deleteHandler" @edit="editHanlder" @complete="completeHandler"
+                        @cancel="cancelHandler" @change="changeHandler">
                     </li>
+                    <!-- <list-item-component></list-item-component> -->
 
                 </ul>
             </div>
@@ -181,14 +163,83 @@
             }
         })
 
-        // 
+        // 顯示列表模組化
+        // 重點：item.timestamp,item.status,item.content
+        // 1方式：傳物件，無法限制動不動物件。怕協作的人動到物件，就失去單向資料流的意義，所以用2較好
+        // 2方式：傳單筆資料
         Vue.component('list-item-component', {
             data() {
                 return {
-
+                    //修改內容
+                    editingText: ''
                 }
             },
-            template: ``,
+            props: ['item', 'editing'],//要接外面的資料。
+
+            // 完成，應該通知外面做，所以用$emit
+            // 取消，可以在裡面做掉
+            // v-model="item.status" 改成  v-model="status"
+            template: `
+                    <li><template v-if="editing === item">
+                            <input type="text" v-model="editingText">
+                            <button @click="completeHandler">完成</button>
+                            <button @click="cancelHandler">取消</button>
+                        </template>
+                        <template v-else>
+                            <input type="checkbox" v-model="status">
+                            {{ item.content }}
+                            <button @click="editHanlder(item)">修改</button>
+                            <button @click="deleteHandler(item)">刪除</button>
+                        </template>
+                    </li>
+            `,
+            computed: {
+                // 因不想動到item這個物件的資料，所以用computed重新包裝這個資料，
+                // 使用物件型事件，這個原理來自Object.defineProperty()
+                // Object.defineProperty() 會直接對一個物件定義、或是修改現有的屬性。執行後會回傳定義完的物件。
+                // Object.defineProperty(對屬性做get和set的function
+                status: {
+                    get() {
+                        return this.item.status
+                    },
+                    set(value) {
+                        // 事件通知出去，我要change狀態
+                        // 這裏的emit三個屬性，記得查一下第三個是什麼
+                        this.$emit('change', this.item, value)
+
+                    }
+                }
+            },
+            methods: {
+                //下面這三個方法都是打事件去“提醒外部vue“的三個方法做事情
+                deleteHandler(item) {
+                    //提醒外面的deleteHandler做事
+                    this.$emit('delete', item)
+                },
+                editHanlder(item) { //原本傳index，現改用item
+                    //原寫法：用index
+                    // this.editing = index
+                    //editing塞進所選中的那筆物件資料
+
+                    // 打事件叫外部做事
+                    this.$emit('edit', item)
+                    // this.editing = item 這是外部要做的事
+
+                    //此時已經可以抓到editing裡的content
+                    this.editingText = item.content
+                },
+                completeHandler() {
+                    //能成功抓到editing.content，是因為在editHanlder時，已經為editing塞進物件資料，
+                    //所以這裡可以抓到edition裡的content
+                    this.$emit('complete', this.editingText)
+                    // this.editing.content = this.editingText 這是外部要做的
+                    this.cancelHandler()
+                },
+                cancelHandler() {
+                    this.editingText = ''
+                    this.$emit('cancel')
+                }
+            }
 
         })
 
@@ -232,6 +283,18 @@
                     //所以讓外層vue的show等於帶上的值(all/open/done)
                     this.show = value
                 },
+                //之前的inputHanlder所有的資料都是我們自己掌握，事件我們自己處理
+                //而這個inputHanlder前面已經有東西幫我們攔一層了
+                //所以這裡要做的事情只有當初的某些部分，資料的處理
+                inputHandler() {
+                    this.list.push({
+                        timestamp: new Date().getTime(),//作為key使用
+                        status: false,//預設false,表示事項未完成
+                        content: this.inputText
+                    })
+                    //推進去後input清掉資料
+                    this.inputText = ''
+                },
                 //偷懶先用index 
                 deleteHandler(item) {
 
@@ -269,18 +332,6 @@
                     this.editingText = ''
                     this.editing = null
                 },
-                //之前的inputHanlder所有的資料都是我們自己掌握，事件我們自己處理
-                //而這個inputHanlder前面已經有東西幫我們攔一層了
-                //所以這裡要做的事情只有當初的某些部分，資料的處理
-                inputHandler() {
-                    this.list.push({
-                        timestamp: new Date().getTime(),//作為key使用
-                        status: false,//預設false,表示事項未完成
-                        content: this.inputText
-                    })
-                    //推進去後input清掉資料
-                    this.inputText = ''
-                },
                 //這個模組的資料會打出來，value去接它
                 input2Handler(value) {
                     this.list.push({
@@ -291,6 +342,9 @@
                         content: value
                     })
                     //清空值要去模組裡的inputText
+                },
+                changeHandler(item, value) {
+                    item.status = value
                 }
 
             }
