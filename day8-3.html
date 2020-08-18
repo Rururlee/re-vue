@@ -115,7 +115,7 @@
                     this.inputText = ''
 
                 },
-                //偷懶先用index 
+                //改用item
                 deleteHandler(item) {
 
                     //這裡改用filter寫
@@ -125,7 +125,7 @@
                         //target不等於item才留下來(取得不等於index的i資料)
                         console.log('target === ', target)
                         console.log('item === ', item)
-                        return target != item //deleteHandler(item)的item，就是被選中的要刪掉的某項item資料
+                        return target != item //deleteHandler(item)的item，就是被選中的要刪掉的某項item物件資料
                     })
 
                     //這裡不用splice，篩選後用index去對照，刪除資料會刪錯筆資料
