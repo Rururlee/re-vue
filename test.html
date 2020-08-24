@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>test</title>
+  <style>
+    #app {
+      padding: 1rem 3rem;
+    }
+
+    li button {
+      display: none;
+    }
+
+    li:hover button {
+      display: inline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+
+    //closure
+    function makeFunc() {
+      var name = "Mozilla";
+      function displayName() {
+        console.log(name);
+      }
+      return displayName;
+    }
+
+    var myFunc = makeFunc();
+    myFunc();
+
+
+    // ------------------------------ line ------------------------------ //
+    // function counter() {
+    //   var count = 0;
+
+    //   function innerCounter() {
+    //     return ++count;
+    //   }
+
+    //   return innerCounter;
+    // }
+
+    //上面簡化寫法
+    function counter() {
+      var count = 0;
+
+      //回傳一個內部function給外部使用
+      return function () {
+        return ++count;
+      }
+    }
+    var countFunc = counter();
+
+    console.log(countFunc());   // 1
+    console.log(countFunc());   // 2
+    console.log(countFunc());   // 3Ｆ
+
+
+    // ------------------------------ line ------------------------------ //
+
+    let foo = 5
+      (function () {
+        console.log(foo);
+        var foo = 10;
+      })();
+
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

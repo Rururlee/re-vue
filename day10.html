@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day10 - 組件封裝與資料傳遞</title>
+    <style>
+        #app {
+            padding: 1rem 3rem;
+        }
+
+        li button {
+            display: none;
+        }
+
+        li:hover button {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <adv-component></adv-component>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script>
+
+        const BasicComponent = {
+            template: `<div>Ruru</div>`
+        }
+
+        const AdvComponent = {
+            template: `<basic-component></basic-component>`,
+            components: { BasicComponent } //這樣內層就可以使用外層的BasicComponent
+        }
+
+        // 全域註冊
+        // 泛用的模組(客製input、客製form表)，使用全域
+        // Vue.component('basic-component', BasicComponent)
+        // Vue.component('adv-component', AdvComponent)
+
+        // 區域註冊
+        // 某些頁面特定的元件
+        new Vue({
+            el: '#app',
+            components: {
+                AdvComponent
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>
