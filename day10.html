@@ -33,21 +33,32 @@
 
         const AdvComponent = {
             template: `<basic-component></basic-component>`,
-            components: { BasicComponent } //這樣內層就可以使用外層的BasicComponent
+            components: {
+                BasicComponent //這樣內層就可以使用外層的BasicComponent
+            }
         }
 
-        // 全域註冊
+        // 1.全域註冊
         // 泛用的模組(客製input、客製form表)，使用全域
         // Vue.component('basic-component', BasicComponent)
         // Vue.component('adv-component', AdvComponent)
 
-        // 區域註冊
+        // 1-2. Module Systems
+        // 兩個模組組合起來
+        const components = {
+            BasicComponent,
+            AdvComponent
+        }
+
+        // 2.區域註冊
         // 某些頁面特定的元件
         new Vue({
             el: '#app',
-            components: {
-                AdvComponent
-            }
+            // components: {
+            //     AdvComponent,
+            // }
+            // 搭配 Module Systems
+            components
         })
     </script>
 
