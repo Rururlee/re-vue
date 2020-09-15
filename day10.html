@@ -22,33 +22,41 @@
 
 <body>
     <div id="app">
-        <adv-component></adv-component>
+        <!-- <adv-component></adv-component> -->
+        <!-- basic-name若沒做bind,那麼傳的資料視為字串 -->
+        <basic-component :basic-name="name"></basic-component>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
+        // 以下這些註冊會寫在啟動檔main.js裡，不會寫在component
 
         const BasicComponent = {
-            template: `<div>Ruru</div>`
-        }
-
-        const AdvComponent = {
-            template: `<basic-component></basic-component>`,
-            components: {
-                BasicComponent //這樣內層就可以使用外層的BasicComponent
+            template: `<div>{{ basicName }}</div>`,
+            // props:別人給我的資料。這裡可以是物件或陣列
+            // props: ['basicName'],
+            props: {
+                basicName: String, // 指定basicName的型別為Number
             }
         }
 
+        // const AdvComponent = {
+        //     template: `<basic-component></basic-component>`,
+        //     components: {
+        //         BasicComponent //這樣內層就可以使用外層的BasicComponent
+        //     }
+        // }
+
         // 1.全域註冊
         // 泛用的模組(客製input、客製form表)，使用全域
-        // Vue.component('basic-component', BasicComponent)
+        Vue.component('basic-component', BasicComponent)
         // Vue.component('adv-component', AdvComponent)
 
         // 1-2. Module Systems
         // 兩個模組組合起來
-        const components = {
-            BasicComponent,
-            AdvComponent
-        }
+        // const components = {
+        //     BasicComponent,
+        //     AdvComponent
+        // }
 
         // 2.區域註冊
         // 某些頁面特定的元件
@@ -58,7 +66,12 @@
             //     AdvComponent,
             // }
             // 搭配 Module Systems
-            components
+            // components
+            data() {
+                return {
+                    name: 'Ruru'
+                }
+            }
         })
     </script>
 
