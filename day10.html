@@ -24,18 +24,47 @@
     <div id="app">
         <!-- <adv-component></adv-component> -->
         <!-- basic-name若沒做bind,那麼傳的資料視為字串 -->
-        <basic-component :basic-name="name"></basic-component>
+        <!-- 只寫active會是true。或是綁定，例如:is-active然後設定true -->
+
+        <!-- 綁定方法1.所有綁定寫在tag上 -->
+        <!-- <basic-component :basic-name="name" active :is-active="true"></basic-component> -->
+
+        <!-- 綁定方法2.將所有綁定資料包起來(簡化html) -->
+        <basic-component v-bind="basicBind" str="success"></basic-component>
+        <br>
+        <input-component checked="checked" class="AAA"></input-component>
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
     <script>
         // 以下這些註冊會寫在啟動檔main.js裡，不會寫在component
 
+        const InputComponent = {
+            template: `<label>｀
+                <input type="checkbox" v-bind="$attrs" class="BBB">
+            </label>`,
+            inheritAttrs: false,// 不繼承
+            // 我這裡沒有做任何的prop宣告時，若給tag綁定屬性checked，會讓這個checked傳進第一層的地方(input)
+
+        }
+
         const BasicComponent = {
             template: `<div>{{ basicName }}</div>`,
-            // props:別人給我的資料。這裡可以是物件或陣列
+            // props:別人給我的資料。這裡可以是物件或陣列(但不建議，因為會輕易可控制這個傳進來的資料，然後影響到外面的資料。意思是不建議修改傳進來的資料)
             // props: ['basicName'],
-            props: {
+            props: { // 
                 basicName: String, // 指定basicName的型別為Number
+                active: Boolean,
+                'is-active': Boolean,
+
+                str: {
+                    type: String,
+                    default: undefined,
+                    validator: function (value) {
+                        // 這個值必須匹配二級字符串中的一個
+                        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+                    }
+                }
             }
         }
 
@@ -50,6 +79,7 @@
         // 泛用的模組(客製input、客製form表)，使用全域
         Vue.component('basic-component', BasicComponent)
         // Vue.component('adv-component', AdvComponent)
+        Vue.component('input-component', InputComponent)
 
         // 1-2. Module Systems
         // 兩個模組組合起來
@@ -70,6 +100,16 @@
             data() {
                 return {
                     name: 'Ruru'
+                }
+            },
+            // computed將需要綁定的資料包起來
+            computed: {
+                basicBind() {
+                    return {
+                        "basic-name": this.name,
+                        active: true,
+                        "is-active": true
+                    }
                 }
             }
         })
