@@ -83,8 +83,11 @@
     * 加上inheritAttrs: false，這樣就不會讓外層label的屬性(class=AAA)降到下一層
     * 但此時checked會變空值，解決方法在第13
 
-#### 13.加上inheritAttrs: false，checked變空值
+#### 13.加上inheritAttrs: false，checked變空值的解決方法
     * template加上$attrs
+      template: `<label>｀                                    
+          <input type="checkbox" v-bind="$attrs" class="BBB">
+      </label>`,                                             
     * tag上checked要賦予值，<input-component checked="checked" class="AAA"></input-component>
 
 #### 14.$refs可以抓取vue生成的dom
